@@ -52,15 +52,16 @@ function getData(){
     const data = document.getElementById("data").value;
     const units = document.getElementById("dataUnit").value;
     const convert = 1000;
-    if (units === "unlimited"){
+    //converting the input values so that they will corespond to the object
+    if (units === "unlimited"){ //if user select the input "Unlimited" from oprions
         data = convert;
         return data;
 
-    }else if(units === "MB"){
+    }else if(units === "MB"){//if user select the MB from options it convert it to GB by dividing.
         return data/1000;
     }
     else { 
-        if(data>90){
+        if(data>90){ //if it will enter any value bigger then 90GB it will consider it as unlimited
 
             return convert;
         }else{
@@ -68,11 +69,11 @@ function getData(){
         }
     }
 };
-//get the minimum minutes
+//get the minimum minutes- and convert to compare to unlimited
 function getMinutes(){
     const minutes = document.getElementById("minutes").value;
     const convert = 1000;
-    if (minutes<250){
+    if (minutes<250){  //every brand has it`s own limit on minutes so fuck knows how to convert them
         return convert;
     } else if(minutes ==="unlimited" || minutes ==="Unlimited"){
         return convert;
@@ -84,24 +85,26 @@ function getTexts(){
     const mess = document.getElementById("texts").value;
     const convert = 1000;
     if(mess>2){
-        return convert;
+        return convert; //only motorala limit is 500 in rest all unlimited again Fuck knows how to convert it
     }else if(mess ==="unlimited" || mess ==="Unlimited"){
         return convert;
     }
   return mess;
   
 };
-
+//collecting together all user preferences into an object userPreferences
 function getUserPreferences(){
-     const brand = options.brands[0];
+     const brand = options.brands[0]; //looking only for the first option in the array! NEED TO WORK FOR IF THERE ARE MORE OPTIONS TO CHOOSE FROM 
     const monthlyCost = getMonthlyCost();
     const data = getData();
-    const minutes = getMinutes();
-    const message = getTexts();
+    const minutes = getMinutes();//unlimitid case not working properly
+    const message = getTexts();//unlimitid case not working properly
     const userPreferences = { brandS: brand, monthlyCostS: monthlyCost, dataS: data, minutesS: minutes, txtS: message};
     return userPreferences;
 }
-
+//------------------------END Getting User Preferences -----------------
+//---------------START Matching contract plans-----------------------------
+//
 function filterContracts(userPreferences){
     matchingContracts = contracts.filter(function(contract){
         if(contract.brand == userPreferences.brandS && contract.monthlyCost <= userPreferences.monthlyCostS
