@@ -94,12 +94,13 @@ function getTexts(){
 };
 //collecting together all user preferences into an object userPreferences
 function getUserPreferences(){
-     const brand = options.brands[0]; //looking only for the first option in the array! NEED TO WORK FOR IF THERE ARE MORE OPTIONS TO CHOOSE FROM 
+    let brands = options.brands
+    const brand = options.brands[0]; //looking only for the first option in the array! NEED TO WORK FOR IF THERE ARE MORE OPTIONS TO CHOOSE FROM
     const monthlyCost = getMonthlyCost();
     const data = getData();
     const minutes = getMinutes();//unlimitid case not working properly
     const message = getTexts();//unlimitid case not working properly
-    const userPreferences = { brandS: brand, monthlyCostS: monthlyCost, dataS: data, minutesS: minutes, txtS: message};
+    const userPreferences = { brandS: brands, monthlyCostS: monthlyCost, dataS: data, minutesS: minutes, txtS: message};
     return userPreferences;
 }
 //------------------------END Getting User Preferences -----------------
@@ -107,7 +108,7 @@ function getUserPreferences(){
 //
 function filterContracts(userPreferences){
     matchingContracts = contracts.filter(function(contract){
-        if(contract.brand == userPreferences.brandS && contract.monthlyCost <= userPreferences.monthlyCostS
+        if(userPreferences.brandS.includes(contract.brand) && contract.monthlyCost <= userPreferences.monthlyCostS
              && contract.data >= userPreferences.dataS
              && contract.minutes >= userPreferences.minutesS
              && contract.texts >= userPreferences.txtS )
